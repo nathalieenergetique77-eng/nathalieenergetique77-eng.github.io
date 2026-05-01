@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ – Nath Énergétique</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sage: #6a9ab0;
+      --sage-light: #c5dce8;
+      --cream: #f0f5f8;
+      --warm-dark: #2d4a5a;
+      --gold: #5b8fa8;
+      --gold-light: #c5dce8;
+      --text: #2d4a5a;
+      --muted: #6b8a9a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      font-weight: 300;
+    }
+
+
+
+    /* INTRO */
+    .intro {
+      max-width: 650px;
+      margin: 3.5rem auto 0;
+      padding: 0 2rem;
+      text-align: center;
+    }
+    .intro p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* CATEGORIES */
+    .faq-section {
+      max-width: 820px;
+      margin: 3rem auto 4rem;
+      padding: 0 2rem;
+    }
+
+    .category-label {
+      font-size: .7rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 2.5rem 0 1.2rem;
+    }
+    .category-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gold-light);
+    }
+
+    /* FAQ ITEMS */
+    .faq-item {
+      border-bottom: 1px solid var(--gold-light);
+      overflow: hidden;
+    }
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      text-align: left;
+      padding: 1.2rem 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: var(--warm-dark);
+      line-height: 1.35;
+    }
+    .faq-question:hover { color: var(--gold); }
+    .faq-icon {
+      flex-shrink: 0;
+      width: 22px; height: 22px;
+      border: 1px solid var(--gold-light);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .9rem;
+      color: var(--gold);
+      transition: transform .3s, background .2s;
+    }
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+      background: var(--gold);
+      color: #fff;
+      border-color: var(--gold);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .4s ease, padding .3s;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 500px;
+    }
+    .faq-answer p {
+      font-size: .92rem;
+      line-height: 1.8;
+      color: var(--muted);
+      padding-bottom: 1.3rem;
+      border-left: 2px solid var(--gold-light);
+      padding-left: 1rem;
+      margin-left: .1rem;
+    }
+
+    /* CTA */
+    .cta-box {
+      max-width: 820px;
+      margin: 0 auto 4rem;
+      padding: 0 2rem;
+    }
+    .cta-inner {
+      background: var(--warm-dark);
+      padding: 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-inner::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(143,168,138,.2) 0%, transparent 70%);
+    }
+    .cta-inner h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 300;
+      color: #f0ece4;
+      margin-bottom: .8rem;
+      position: relative;
+    }
+    .cta-inner p {
+      font-size: .88rem;
+      color: var(--sage-light);
+      margin-bottom: 1.5rem;
+      opacity: .85;
+      position: relative;
+    }
+    .cta-btn {
+      display: inline-block;
+      font-family: 'Jost', sans-serif;
+      font-size: .75rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--warm-dark);
+      background: var(--gold-light);
+      padding: .85rem 2rem;
+      text-decoration: none;
+      transition: background .2s;
+      position: relative;
+    }
+    .cta-btn:hover { background: var(--gold); color: #fff; }
+
+    /* FOOTER */
+    footer {
+      background: var(--warm-dark);
+      color: var(--sage-light);
+      text-align: center;
+      padding: 3rem 2rem;
+      font-size: .82rem;
+      letter-spacing: .06em;
+    }
+    footer p + p { margin-top: .5rem; }
+    footer a { color: var(--gold-light); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div class="intro">
+  <p>Vous avez des questions sur les soins énergétiques ? Voici les réponses aux interrogations les plus fréquentes de mes clients.</p>
+</div>
+
+<!-- FAQ -->
+<div class="faq-section">
+
+  <div class="category-label">Les soins énergétiques</div>
+
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggle(this)">
+      Les soins énergétiques présentent-ils des risques ?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer"><p>Les soins énergétiques sont des pratiques douces, naturelles et non invasives. Ils ne présentent aucun danger, car ils respectent le rythme et les besoins de chaque personne. Cependant, ils ne remplacent pas les traitements médicaux traditionnels mais les complètent harmonieusement.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggle(this)">
+      Les soins énergétiques peuvent-ils remplacer un traitement médical ?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer"><p>Non, les soins énergétiques ne remplacent pas les traitements médicaux. Ils sont une méthode complémentaire qui peut accompagner un traitement en cours, mais ils ne se substituent pas aux soins de santé traditionnels.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggle(this)">
+      Les soins énergétiques sont-ils douloureux ?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer"><p>Non, les soins énergétiques ne sont pas douloureux. Au contraire, ils visent à apporter une relaxation profonde et un sentiment de bien-être. Les techniques utilisées, comme l'imposition des mains, sont douces et non invasives, respectant toujours le confort de la personne.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggle(this)">
+      Les soins énergétiques nécessitent-ils une croyance spirituelle ?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer"><p>Non, les soins énergétiques ne reposent pas sur une croyance spirituelle particulière. Ils agissent sur l'énergie du corps, indépendamment des croyances de chacun. L'important est de venir avec une ouverture d'esprit et une intention de mieux-être.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggle(this)">
+      Les soins énergétiques sont-ils adaptés aux seniors ?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer"><p>Oui, les soins énergétiques conviennent parfaitement aux personnes âgées. Ils sont doux, non invasifs, et apportent un soutien pour soulager les douleurs, réduire le stress et retrouver une vitalité intérieure. C'est une méthode bienveillante pour favoriser un mieux-être global.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggle(this)">
+      Peut-on combiner les soins énergétiques avec d'autres thérapies ?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer"><p>Oui, les soins énergétiques sont compatibles avec d'autres thérapies, qu'elles soient médicales ou alternatives. Ils agissent en complément, apportant un soutien énergétique pour renforcer les bienfaits des autres approches. Il est essentiel de toujours informer le praticien des autres thérapies suivies.</p></div>
+  </div>
+
+  <div class="category-label">Avant &amp; pendant la séance</div>
+
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggle(this)">
+      Comment bien se préparer avant un soin énergétique ?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer"><p>Pour bien se préparer à une séance, il est conseillé de venir avec l'esprit ouvert et l'intention de lâcher prise. Portez des vêtements confortables, buvez de l'eau pour faciliter la circulation de l'énergie, et prenez un moment pour respirer et vous centrer avant la séance.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggle(this)">
+      Quelles sont les techniques employées lors des soins énergétiques ?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer"><p>Les techniques utilisées varient selon le praticien. Elles peuvent inclure l'imposition des mains, la visualisation, les techniques de respiration, le reiki, l'utilisation de cristaux ou encore des approches inspirées de la médecine traditionnelle chinoise.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggle(this)">
+      Pourquoi ressent-on des sensations physiques pendant une séance ?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer"><p>Il est courant de ressentir des picotements, des sensations de chaleur, de froid, ou encore des frissons pendant un soin énergétique. Ces sensations sont des signes que l'énergie circule et se rééquilibre. Il est important de rester ouvert et de laisser l'énergie agir en toute confiance.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggle(this)">
+      Quel est le lien entre les soins énergétiques et les chakras ?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer"><p>Les chakras sont des centres énergétiques qui jouent un rôle clé dans les soins énergétiques. Chaque chakra est associé à une partie du corps et à des aspects émotionnels. Les soins énergétiques visent à rééquilibrer ces centres pour harmoniser l'énergie et favoriser un bien-être global.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggle(this)">
+      Quelle est la différence entre le magnétisme et les soins énergétiques ?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer"><p>Le magnétisme est une forme de soin énergétique qui utilise l'imposition des mains pour rééquilibrer l'énergie. Les soins énergétiques, quant à eux, englobent différentes pratiques visant à harmoniser les énergies, comme le reiki, la lithothérapie, et bien d'autres.</p></div>
+  </div>
+
+  <div class="category-label">Après la séance &amp; résultats</div>
+
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggle(this)">
+      Au bout de combien de temps peut-on ressentir les effets ?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer"><p>Les effets des soins énergétiques varient selon chaque personne. Certains ressentent un bien-être immédiat, tandis que d'autres peuvent observer des changements sur plusieurs jours. La clé est de faire confiance au processus et d'écouter son corps.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggle(this)">
+      Combien de séances faut-il pour ressentir les bienfaits ?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer"><p>Le nombre de séances nécessaires varie selon les besoins de chacun. Certaines personnes ressentent un mieux-être dès la première séance, tandis que d'autres préfèrent suivre un accompagnement plus régulier. L'important est de respecter son rythme et de faire confiance au processus.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggle(this)">
+      Quelle est la fréquence idéale pour des séances de soins énergétiques ?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer"><p>La fréquence dépend des besoins de chacun. Certaines personnes préfèrent une séance ponctuelle, tandis que d'autres optent pour un suivi régulier (toutes les 2 à 4 semaines) afin de maintenir l'équilibre énergétique. Écoutez votre ressenti et discutez-en avec votre praticien.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggle(this)">
+      Y a-t-il des effets secondaires après un soin énergétique ?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer"><p>Les soins énergétiques sont doux et non invasifs. Après une séance, certaines personnes peuvent ressentir une légère fatigue ou des émotions plus présentes, signes que le corps et l'esprit se rééquilibrent. Il est conseillé de se reposer et de boire de l'eau après une séance.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggle(this)">
+      Pourquoi les soins énergétiques peuvent-ils provoquer des émotions fortes ?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer"><p>Les soins énergétiques libèrent les blocages émotionnels enfouis, ce qui peut amener à ressentir des émotions intenses après une séance. C'est une réaction normale et saine, signe que l'énergie circule de nouveau. Laissez ces émotions s'exprimer sans jugement, pour favoriser le bien-être intérieur.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggle(this)">
+      Les soins énergétiques peuvent-ils vraiment réduire l'anxiété ?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer"><p>Oui, les soins énergétiques peuvent aider à réduire l'anxiété en rééquilibrant les énergies perturbées. Ils apaisent le système nerveux, libèrent les blocages émotionnels et offrent un profond sentiment de calme. Une méthode douce pour retrouver sérénité et bien-être.</p></div>
+  </div>
+
+</div>
+
+<!-- CTA -->
+<div class="cta-box">
+  <div class="cta-inner">
+    <h2>Vous avez encore des questions ?</h2>
+    <p>N'hésitez pas à me contacter, je serai ravie de vous répondre.</p>
+    <a href="mailto:contact@praticienneenergie.fr" class="cta-btn">Me contacter →</a>
+  </div>
+</div>
+
+
+
+<script>
+  function toggle(btn) {
+    const item = btn.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+</script>
+</body>
+</html>
