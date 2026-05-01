@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog – Nath Énergétique</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sage: #7aafc7;
+      --sage-light: #c2dfed;
+      --cream: #f4f8fb;
+      --warm-dark: #2a4a5e;
+      --gold: #7aafc7;
+      --gold-light: #d6eaf4;
+      --text: #2a3d4a;
+      --muted: #6b8ea0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      font-weight: 300;
+    }
+
+
+
+
+
+    /* ── HERO INTRO ── */
+    .hero {
+      max-width: 680px;
+      margin: 4rem auto 0;
+      padding: 0 2rem;
+      text-align: center;
+    }
+    .hero p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── BLOG GRID ── */
+    .blog-section {
+      max-width: 1100px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+    .section-label {
+      font-size: .7rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gold-light);
+    }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: #fff;
+      border: 1px solid var(--gold-light);
+      border-radius: 2px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform .3s, box-shadow .3s;
+      cursor: pointer;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(42,74,94,.1);
+    }
+    .card-tag {
+      padding: 1.4rem 1.6rem .5rem;
+      font-size: .65rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--sage);
+    }
+    .card h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem;
+      font-weight: 400;
+      line-height: 1.25;
+      padding: 0 1.6rem .9rem;
+      color: var(--warm-dark);
+    }
+    .card-divider {
+      width: 28px; height: 1px;
+      background: var(--gold);
+      margin: 0 1.6rem .9rem;
+    }
+    .card p {
+      font-size: .88rem;
+      line-height: 1.7;
+      color: var(--muted);
+      padding: 0 1.6rem 1.4rem;
+      flex: 1;
+    }
+    .card-link {
+      display: inline-block;
+      margin: 0 1.6rem 1.6rem;
+      font-size: .72rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gold-light);
+      padding-bottom: 2px;
+      transition: border-color .2s, color .2s;
+    }
+    .card-link:hover { border-color: var(--gold); }
+
+    /* ── FEATURED (large card) ── */
+    .card.featured {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--warm-dark);
+      border-color: transparent;
+    }
+    .featured-left {
+      padding: 3rem 2.5rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .featured-left .card-tag { padding: 0; color: var(--sage-light); margin-bottom: .7rem; }
+    .featured-left h2 { padding: 0; color: #eaf4fb; font-size: 2rem; margin-bottom: .8rem; }
+    .featured-left .card-divider { background: var(--gold); margin: 0 0 1rem; }
+    .featured-left p { padding: 0; color: rgba(234,244,251,.75); font-size: .9rem; margin-bottom: 1.5rem; }
+    .featured-left .card-link { margin: 0; color: var(--gold-light); border-color: rgba(122,175,199,.35); }
+    .featured-right {
+      background: linear-gradient(135deg, var(--sage) 0%, #5a9ab8 100%);
+      display: flex; align-items: center; justify-content: center;
+      padding: 3rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      color: rgba(255,255,255,.3);
+      font-style: italic;
+    }
+
+    /* ── ARTICLE VIEW ── */
+    .article-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(42,74,94,.6);
+      backdrop-filter: blur(4px);
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+    .article-overlay.open { display: flex; }
+    .article-modal {
+      background: var(--cream);
+      max-width: 720px;
+      width: 100%;
+      margin: auto;
+      border-radius: 2px;
+      overflow: hidden;
+      animation: slideUp .35s ease;
+    }
+    @keyframes slideUp {
+      from { opacity:0; transform: translateY(20px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+    .article-header {
+      background: var(--warm-dark);
+      padding: 2.5rem 2.5rem 2rem;
+    }
+    .article-header .card-tag { padding: 0; color: var(--sage-light); }
+    .article-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      font-weight: 300;
+      color: #eaf4fb;
+      padding: .5rem 0 0;
+    }
+    .article-body {
+      padding: 2.5rem;
+    }
+    .article-body p {
+      font-size: .95rem;
+      line-height: 1.85;
+      color: var(--text);
+      margin-bottom: 1.2rem;
+    }
+    .article-body h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 400;
+      color: var(--warm-dark);
+      margin: 2rem 0 .7rem;
+    }
+    .article-body ul {
+      list-style: none;
+      margin-bottom: 1.2rem;
+    }
+    .article-body ul li {
+      font-size: .9rem;
+      line-height: 1.7;
+      color: var(--muted);
+      padding: .3rem 0 .3rem 1.2rem;
+      position: relative;
+    }
+    .article-body ul li::before {
+      content: '—';
+      position: absolute; left: 0;
+      color: var(--gold);
+    }
+    .chakra-item {
+      border-left: 3px solid var(--gold-light);
+      padding: .8rem 1rem;
+      margin-bottom: 1rem;
+      background: rgba(184,151,106,.05);
+    }
+    .chakra-item strong {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--warm-dark);
+      display: block;
+      margin-bottom: .3rem;
+    }
+    .btn-close {
+      display: block;
+      margin: 1.5rem 2.5rem 2.5rem;
+      background: none;
+      border: 1px solid var(--gold-light);
+      color: var(--gold);
+      font-family: 'Jost', sans-serif;
+      font-size: .72rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      padding: .7rem 1.5rem;
+      cursor: pointer;
+      transition: background .2s;
+      width: fit-content;
+    }
+    .btn-close:hover { background: var(--gold-light); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--warm-dark);
+      color: var(--sage-light);
+      text-align: center;
+      padding: 3rem 2rem;
+      font-size: .82rem;
+      opacity: .9;
+      letter-spacing: .06em;
+    }
+    footer p + p { margin-top: .5rem; }
+    footer a { color: var(--gold-light); text-decoration: none; }
+
+    @media (max-width: 640px) {
+      .card.featured { grid-template-columns: 1fr; }
+      .featured-right { display: none; }
+      nav a { margin: 0 .5rem; font-size: .7rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <p>Bienvenue dans mon espace de partage. Ici, je vous transmets mes connaissances sur l'énergie vitale, les outils que j'utilise et les concepts qui guident ma pratique.</p>
+</div>
+
+<!-- BLOG ARTICLES -->
+<section class="blog-section">
+  <div class="section-label">Articles</div>
+
+  <div class="blog-grid">
+
+    <!-- FEATURED -->
+    <div class="card featured" onclick="openArticle('energie')">
+      <div class="featured-left">
+        <div class="card-tag">Fondamentaux</div>
+        <h2>Qu'est-ce que l'énergie vitale ?</h2>
+        <div class="card-divider"></div>
+        <p>Prana, chi, qi… L'énergie vitale est au cœur de notre bien-être. Découvrez comment elle circule en nous et ce qui se passe quand elle se bloque.</p>
+        <a class="card-link" href="#" onclick="event.stopPropagation(); openArticle('energie')">Lire l'article →</a>
+      </div>
+      <div class="featured-right">☯</div>
+    </div>
+
+    <!-- BURNOUT -->
+    <div class="card" onclick="openArticle('burnout')">
+      <div class="card-tag">Bien-être &amp; Vitalité</div>
+      <h2>Burn-out : et si votre corps vous envoyait des signaux depuis longtemps ?</h2>
+      <div class="card-divider"></div>
+      <p>Fatigue profonde, douleurs inexpliquées, perte d'envie… Le burn-out ne surgit pas du jour au lendemain. Le corps parle bien avant que l'on s'effondre. Apprenez à l'écouter.</p>
+      <a class="card-link" href="#" onclick="event.stopPropagation(); openArticle('burnout')">Lire l'article →</a>
+    </div>
+
+    <!-- DOULEURS CHRONIQUES -->
+    <div class="card" onclick="openArticle('douleurs')">
+      <div class="card-tag">Bien-être &amp; Vitalité</div>
+      <h2>Douleurs chroniques et énergie : quel lien ?</h2>
+      <div class="card-divider"></div>
+      <p>Quand la douleur s'installe dans la durée, le corps cherche à transmettre un message. Et si les blocages énergétiques en étaient l'une des clés ?</p>
+      <a class="card-link" href="#" onclick="event.stopPropagation(); openArticle('douleurs')">Lire l'article →</a>
+    </div>
+
+    <!-- SEANCE A DISTANCE -->
+    <div class="card" onclick="openArticle('distance')">
+      <div class="card-tag">Questions fréquentes</div>
+      <h2>Séance à distance : est-ce vraiment efficace ?</h2>
+      <div class="card-divider"></div>
+      <p>On entend souvent "je comprends pas trop comment ça marche à distance…" Voici une explication simple et honnête sur ce que sont les soins à distance et pourquoi ils fonctionnent.</p>
+      <a class="card-link" href="#" onclick="event.stopPropagation(); openArticle('distance')">Lire l'article →</a>
+    </div>
+
+    <!-- CHAKRAS -->
+    <div class="card" onclick="openArticle('chakras')">
+      <div class="card-tag">Centres énergétiques</div>
+      <h2>Les 7 Chakras principaux</h2>
+      <div class="card-divider"></div>
+      <p>Des centres énergétiques situés le long de la colonne vertébrale. Chacun gouverne des émotions, des organes et des aspects spécifiques de notre vie.</p>
+      <a class="card-link" href="#" onclick="event.stopPropagation(); openArticle('chakras')">Lire l'article →</a>
+    </div>
+
+    <!-- ALIGNEMENT -->
+    <div class="card" onclick="openArticle('alignement')">
+      <div class="card-tag">Pratiques</div>
+      <h2>Alignement &amp; Ancrage énergétique</h2>
+      <div class="card-divider"></div>
+      <p>Se connecter à la terre pour stabiliser son énergie, harmoniser ses chakras pour retrouver fluidité et équilibre. Deux piliers essentiels des soins.</p>
+      <a class="card-link" href="#" onclick="event.stopPropagation(); openArticle('alignement')">Lire l'article →</a>
+    </div>
+
+    <!-- PALO SANTO -->
+    <div class="card" onclick="openArticle('palo')">
+      <div class="card-tag">Outils &amp; Rituels</div>
+      <h2>Pourquoi j'utilise le Palo Santo</h2>
+      <div class="card-divider"></div>
+      <p>Ce "bois sacré" d'Amérique latine clôt chacune de mes séances. Purification, intention, retour à soi — voici son rôle dans mon approche énergétique.</p>
+      <a class="card-link" href="#" onclick="event.stopPropagation(); openArticle('palo')">Lire l'article →</a>
+    </div>
+
+    <!-- KOSHIS -->
+    <div class="card" onclick="openArticle('koshis')">
+      <div class="card-tag">Outils &amp; Vibrations</div>
+      <h2>Les Koshis — plus qu'un simple carillon</h2>
+      <div class="card-divider"></div>
+      <p>Ces carillons aux sons cristallins agissent sur les vibrations du corps et du système nerveux. Un outil discret mais profondément rééquilibrant.</p>
+      <a class="card-link" href="#" onclick="event.stopPropagation(); openArticle('koshis')">Lire l'article →</a>
+    </div>
+
+    <!-- NADIS -->
+    <div class="card" onclick="openArticle('nadis')">
+      <div class="card-tag">Canaux énergétiques</div>
+      <h2>Les Nadis &amp; Méridiens</h2>
+      <div class="card-divider"></div>
+      <p>72 000 canaux énergétiques parcourent notre corps. Ida, Pingala, Sushumna… Découvrez les voies par lesquelles circule le prana, et leur lien avec les méridiens chinois.</p>
+      <a class="card-link" href="#" onclick="event.stopPropagation(); openArticle('nadis')">Lire l'article →</a>
+    </div>
+
+    <!-- 5 ENVELOPPES -->
+    <div class="card" onclick="openArticle('enveloppes')">
+      <div class="card-tag">Corps subtils</div>
+      <h2>Les 5 Enveloppes corporelles</h2>
+      <div class="card-divider"></div>
+      <p>Au-delà du corps physique, nous sommes composés de 5 couches — les Koshas. Corps physique, énergétique, mental, intuitif et de béatitude : un voyage vers le Soi.</p>
+      <a class="card-link" href="#" onclick="event.stopPropagation(); openArticle('enveloppes')">Lire l'article →</a>
+    </div>
+
+    <!-- 5 ÉLÉMENTS -->
+    <div class="card" onclick="openArticle('elements')">
+      <div class="card-tag">Philosophie énergétique</div>
+      <h2>Les 5 Éléments</h2>
+      <div class="card-divider"></div>
+      <p>Terre, Eau, Feu, Air, Éther — les constituants fondamentaux de tout ce qui existe. Comment ces éléments influencent notre corps, nos émotions et notre équilibre.</p>
+      <a class="card-link" href="#" onclick="event.stopPropagation(); openArticle('elements')">Lire l'article →</a>
+    </div>
+
+    <!-- GUERISSEURS -->
+    <div class="card" onclick="openArticle('guerisseurs')">
+      <div class="card-tag">Réflexion &amp; Inspiration</div>
+      <h2>Nous sommes tous des guérisseurs</h2>
+      <div class="card-divider"></div>
+      <p>Ce n'est pas ce que nous faisons qui est important, mais ce que nous sommes. Un regard inspirant sur notre capacité naturelle à guérir et à offrir notre lumière.</p>
+      <a class="card-link" href="#" onclick="event.stopPropagation(); openArticle('guerisseurs')">Lire l'article →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════ ARTICLE MODALS ═══════════════════════ -->
+
+<!-- ÉNERGIE VITALE -->
+<div class="article-overlay" id="art-energie" onclick="closeIfBg(event, 'energie')">
+  <div class="article-modal">
+    <div class="article-header">
+      <div class="card-tag">Fondamentaux · Énergie vitale</div>
+      <h2>Qu'est-ce que l'énergie vitale ?</h2>
+    </div>
+    <div class="article-body">
+      <p>L'énergie vitale, aussi appelée <em>prana</em>, <em>chi</em> ou <em>qi</em>, est au cœur de notre bien-être. Elle circule à travers tout notre corps et influence notre santé physique, mentale et émotionnelle. Quand elle est fluide, nous ressentons l'équilibre et l'harmonie. Mais lorsqu'elle est bloquée, des déséquilibres peuvent apparaître.</p>
+      <p>Au-delà de notre corps physique, nous sommes tous composés d'énergie. Notre énergie vitale circule à travers des centres d'énergie et influence nos émotions, nos pensées et notre vitalité. Prendre soin de cette énergie est essentiel pour rester en harmonie avec soi-même et le monde qui nous entoure.</p>
+      <h3>Tout est énergie</h3>
+      <p>L'énergie, bien qu'invisible à l'œil nu, est une force fondamentale qui imprègne tout ce qui existe, de l'infiniment petit à l'immensité de l'univers. Chaque élément de notre réalité vibre à une fréquence énergétique unique.</p>
+      <p>Cette énergie vitale circule en nous, alimentant notre bien-être physique et émotionnel. Divers facteurs peuvent perturber cette circulation, entraînant des blocages, des stagnations et des déséquilibres. Ces perturbations peuvent se manifester par des inconforts, des douleurs, des maladies ou des troubles émotionnels.</p>
+      <h3>Le rôle des soins énergétiques</h3>
+      <p>Les soins énergétiques visent à rétablir l'harmonie de cette circulation, en libérant les blocages et en favorisant une circulation fluide et équilibrée. Ils agissent en profondeur, en s'attaquant aux racines des problèmes plutôt qu'aux simples symptômes.</p>
+      <p>Que vous souffriez d'anxiété, de douleurs chroniques, de stress ou d'autres maux, les soins énergétiques peuvent vous aider à vous libérer des charges émotionnelles et énergétiques qui vous empêchent d'avancer. Ils agissent aussi bien sur le corps que sur l'esprit.</p>
+      <h3>Ce que vous pouvez ressentir après une séance</h3>
+      <ul>
+        <li>Apaisement du stress et des tensions</li>
+        <li>Sensation de légèreté</li>
+        <li>Plus de clarté mentale</li>
+        <li>Relâchement émotionnel</li>
+        <li>Retour à soi et à l'équilibre intérieur</li>
+      </ul>
+    </div>
+    <button class="btn-close" onclick="closeArticle('energie')">← Retour au blog</button>
+  </div>
+</div>
+
+<!-- CHAKRAS -->
+<div class="article-overlay" id="art-chakras" onclick="closeIfBg(event, 'chakras')">
+  <div class="article-modal">
+    <div class="article-header">
+      <div class="card-tag">Centres énergétiques</div>
+      <h2>Les 7 Chakras principaux</h2>
+    </div>
+    <div class="article-body">
+      <p>Les chakras sont des centres énergétiques localisés dans notre corps. Il en existe 88 000 dans l'ensemble du corps humain, mais les 7 principaux sont placés de façon stratégique le long de la colonne vertébrale, allant du coccyx jusqu'au-dessus de la tête. Chacun est associé à une couleur de l'arc-en-ciel et possède un rôle de régulation spécifique.</p>
+      <p>Lorsque l'énergie d'un ou plusieurs chakras est bloquée, il y a inévitablement des répercussions sur tous les autres. Ces dysfonctionnements peuvent varier de légèrement temporaires à plus persistants, avec des symptômes ou des tensions physiques dans les parties du corps correspondantes.</p>
+
+      <div class="chakra-item">
+        <strong>🔴 Muladhara — Chakra Racine</strong>
+        La première roue énergétique, liée à la dimension physique et à la terre. Elle gère l'énergie, l'instinct de survie et nos glandes surrénales. Bien harmonisé, il confère un sentiment de sécurité et de paix intérieure. Élément : la Terre.
+      </div>
+      <div class="chakra-item">
+        <strong>🟠 Swadhisthana — Chakra Sacré</strong>
+        Situé quelques centimètres sous le nombril, il représente notre joie d'être en vie. Associé à la lune, il est relié au plaisir, à l'intimité et à la créativité. Élément : l'Eau.
+      </div>
+      <div class="chakra-item">
+        <strong>🟡 Manipura — Plexus Solaire</strong>
+        Le chakra de la confiance en soi et du passage à l'action. Il gère les émotions spontanées, les désirs et la capacité personnelle. Élément : le Feu.
+      </div>
+      <div class="chakra-item">
+        <strong>🟢 Anahata — Chakra Cœur</strong>
+        Situé au centre du sternum, il est lié à l'amour, la compassion, l'altruisme et les sentiments humanitaires. Couleur verte, symbole de sérénité. Élément : l'Air.
+      </div>
+      <div class="chakra-item">
+        <strong>🔵 Vishuddha — Chakra de la Gorge</strong>
+        Le chakra de l'expression et de la création. Il gouverne la communication, la réceptivité et tout ce qui concerne l'expression de soi. Élément : l'Éther (prana).
+      </div>
+      <div class="chakra-item">
+        <strong>🟣 Ajna — Troisième Œil</strong>
+        Situé entre les deux yeux, c'est le chakra de la vision intérieure, de la clairvoyance et de l'intuition. Sa couleur est indigo. Il est le juste milieu entre idéalisme et imaginaire.
+      </div>
+      <div class="chakra-item">
+        <strong>⚪ Sahasrara — Chakra Couronne</strong>
+        Au sommet du crâne, en relation avec tout ce qui nous dépasse : les planètes, l'univers, le divin. Sa spiritualité va bien au-delà de l'intellect. Couleurs : blanc ou violet.
+      </div>
+      <p>Des chakras équilibrés peuvent mener à une conscience de soi accrue, une meilleure gestion du stress et un sentiment de paix et d'harmonie dans votre vie.</p>
+    </div>
+    <button class="btn-close" onclick="closeArticle('chakras')">← Retour au blog</button>
+  </div>
+</div>
+
+<!-- ALIGNEMENT -->
+<div class="article-overlay" id="art-alignement" onclick="closeIfBg(event, 'alignement')">
+  <div class="article-modal">
+    <div class="article-header">
+      <div class="card-tag">Pratiques énergétiques</div>
+      <h2>Alignement &amp; Ancrage énergétique</h2>
+    </div>
+    <div class="article-body">
+      <h3>L'Ancrage</h3>
+      <p>L'ancrage fait référence à la capacité de se connecter à la terre et de stabiliser son énergie. Cela permet de se sentir centré et équilibré. Les techniques d'ancrage peuvent inclure des exercices de respiration, la méditation, ou même des visualisations où l'on s'imagine enraciné dans le sol, comme un arbre.</p>
+      <p>L'ancrage aide à dissiper les énergies négatives et à renforcer la présence dans le moment présent.</p>
+      <h3>L'Alignement</h3>
+      <p>L'alignement énergétique concerne l'harmonisation des centres énergétiques du corps, souvent appelés chakras. Lorsque ces centres sont alignés et équilibrés, l'énergie peut circuler librement, favorisant ainsi la santé physique, émotionnelle et spirituelle.</p>
+      <p>Des pratiques comme le yoga, la méditation ou les soins énergétiques peuvent aider à atteindre cet alignement.</p>
+      <h3>Un duo fondamental</h3>
+      <p>L'ancrage et l'alignement énergétique sont deux concepts importants et complémentaires dans les pratiques de soins. Ensemble, ils contribuent à un état de bien-être général, permettant de mieux gérer le stress et les émotions, tout en favorisant une meilleure connexion avec soi-même et son environnement.</p>
+    </div>
+    <button class="btn-close" onclick="closeArticle('alignement')">← Retour au blog</button>
+  </div>
+</div>
+
+<!-- PALO SANTO -->
+<div class="article-overlay" id="art-palo" onclick="closeIfBg(event, 'palo')">
+  <div class="article-modal">
+    <div class="article-header">
+      <div class="card-tag">Outils &amp; Rituels</div>
+      <h2>Pourquoi j'utilise le Palo Santo</h2>
+    </div>
+    <div class="article-body">
+      <h3>Qu'est-ce que le palo santo ?</h3>
+      <p>Le palo santo, ou <em>Bursera graveolens</em>, signifie littéralement « bois sacré ». Cet arbre pousse dans les forêts tropicales sèches d'Amérique latine, principalement dans le nord du Pérou et en Équateur, mais aussi en Colombie, en Bolivie et dans d'autres régions andines.</p>
+      <p>Employé depuis des siècles par les peuples autochtones pour purifier les espaces, protéger et accompagner les rituels spirituels, son bois développe avec le temps une résine naturellement riche en terpènes, à l'arôme doux, boisé et subtilement citronné.</p>
+      <p>Le palo santo provient de branches ou d'arbres tombés naturellement, laissés à sécher plusieurs années. Cette maturation est essentielle : c'est elle qui permet au bois de concentrer sa résine et de révéler son parfum caractéristique, à la fois chaleureux, légèrement sucré et citronné.</p>
+      <h3>Son rôle dans mes soins</h3>
+      <p>J'utilise le palo santo à la fin des soins énergétiques comme un rituel de clôture simple et symbolique. Sa fumée, douce et apaisante, aide à dissiper les résidus énergétiques, à purifier l'espace et à ramener la personne dans l'instant présent.</p>
+      <p>Ce moment permet d'intégrer les ressentis du soin tout en installant une intention de protection et de bienveillance.</p>
+    </div>
+    <button class="btn-close" onclick="closeArticle('palo')">← Retour au blog</button>
+  </div>
+</div>
+
+<!-- KOSHIS -->
+<div class="article-overlay" id="art-koshis" onclick="closeIfBg(event, 'koshis')">
+  <div class="article-modal">
+    <div class="article-header">
+      <div class="card-tag">Outils &amp; Vibrations sonores</div>
+      <h2>Les Koshis — plus qu'un simple carillon</h2>
+    </div>
+    <div class="article-body">
+      <p>Le Koshi est utilisé comme outil de rééquilibrage énergétique et de relaxation. Son action repose principalement sur le son et les vibrations.</p>
+      <h3>Action des vibrations sonores</h3>
+      <p>Les sons doux et harmonieux du Koshi produisent des vibrations subtiles qui se diffusent dans le corps. Ces vibrations peuvent détendre le système nerveux, relâcher les tensions musculaires et favoriser une meilleure circulation de l'énergie.</p>
+      <h3>Apaisement du système nerveux</h3>
+      <p>Le Koshi aide à passer d'un état de stress (système sympathique) à un état de relaxation profonde (système parasympathique). Les résultats peuvent inclure une diminution du stress et de l'anxiété, une amélioration du sommeil et une sensation de calme intérieur.</p>
+      <h3>Les 4 Koshis et les éléments</h3>
+      <p>Chaque Koshi est associé à un élément, en lien symbolique avec différents centres énergétiques :</p>
+      <ul>
+        <li><strong>Terre</strong> — ancrage, stabilité</li>
+        <li><strong>Eau</strong> — émotions, fluidité</li>
+        <li><strong>Air</strong> — respiration, clarté mentale</li>
+        <li><strong>Feu</strong> — vitalité, motivation</li>
+      </ul>
+      <p>Le son de chaque Koshi aide à harmoniser le centre énergétique qui lui correspond, créant un espace de soin à la fois doux et profond.</p>
+    </div>
+    <button class="btn-close" onclick="closeArticle('koshis')">← Retour au blog</button>
+  </div>
+</div>
+
+<!-- NADIS -->
+<div class="article-overlay" id="art-nadis" onclick="closeIfBg(event, 'nadis')">
+  <div class="article-modal">
+    <div class="article-header">
+      <div class="card-tag">Canaux énergétiques</div>
+      <h2>Les Nadis &amp; Méridiens</h2>
+    </div>
+    <div class="article-body">
+      <h3>Les 3 Nadis principaux</h3>
+      <p>Les nadis sont des canaux énergétiques permettant de faire circuler l'énergie cosmique dans notre corps. Ils seraient au nombre de 72 000, chacun étant responsable d'un mouvement. Parmi eux, 3 sont majeurs et servent de tuteurs au corps pranique.</p>
+      <div class="chakra-item">
+        <strong>Ida — énergie lunaire</strong>
+        Situé dans le côté gauche du corps, il véhicule l'énergie négative, féminine et froide. Il est relié au système nerveux parasympathique qui ralentit les fonctions du corps.
+      </div>
+      <div class="chakra-item">
+        <strong>Pingala — énergie solaire</strong>
+        Situé dans le côté droit du corps, il véhicule l'énergie positive, masculine et chaude. Il est relié au système nerveux sympathique qui accélère les fonctions du corps.
+      </div>
+      <div class="chakra-item">
+        <strong>Sushumna — canal central</strong>
+        Situé dans le centre de la colonne vertébrale. C'est dans ce nadi que s'élève la kundalini, l'énergie spirituelle. À chaque croisement entre Ida et Pingala se forme un chakra — à l'image du caducée en médecine.
+      </div>
+      <h3>Les Méridiens — canaux de la médecine chinoise</h3>
+      <p>Les méridiens sont des circuits du corps humain par lesquels circule l'énergie vitale (le Qi). Dans la médecine traditionnelle chinoise, il existe 12 méridiens principaux et 8 vaisseaux extraordinaires. Ils alimentent en énergie l'ensemble des organes et des parties du corps.</p>
+      <p>Un fonctionnement anormal d'un organe fait stagner l'énergie dans les méridiens. Il est donc primordial de libérer et régulariser les flux énergétiques en stimulant certains points du corps, grâce à des pressions digitales notamment.</p>
+      <h3>Nadis et méridiens : complémentaires</h3>
+      <p>Ces deux concepts se ressemblent et se complètent pour expliquer les différentes approches de la circulation énergétique dans le corps. Les méridiens sont mobilisés par le toucher grâce à des points spécifiques, tandis que les chakras sont équilibrés grâce notamment au magnétisme. C'est pourquoi il est intéressant d'utiliser les deux approches.</p>
+    </div>
+    <button class="btn-close" onclick="closeArticle('nadis')">← Retour au blog</button>
+  </div>
+</div>
+
+<!-- 5 ENVELOPPES -->
+<div class="article-overlay" id="art-enveloppes" onclick="closeIfBg(event, 'enveloppes')">
+  <div class="article-modal">
+    <div class="article-header">
+      <div class="card-tag">Corps subtils</div>
+      <h2>Les 5 Enveloppes corporelles — Les Koshas</h2>
+    </div>
+    <div class="article-body">
+      <p>Les cinq niveaux du soi sont interconnectés et dépendent les uns des autres. Si le corps est tendu, la respiration est superficielle, l'esprit est irrité et la joie est absente. En revanche, lorsque vous êtes parfaitement en phase avec votre corps, la paix imprègne tous les aspects de votre vie.</p>
+      <div class="chakra-item">
+        <strong>Annamaya Kosha — Corps physique</strong>
+        "Annamaya" signifie "nourriture" en sanskrit. Il s'agit de tout ce qui est tangible dans notre corps : os, muscles, organes. Cette couche est nourrie et soutenue par la nourriture.
+      </div>
+      <div class="chakra-item">
+        <strong>Pranamaya Kosha — Corps énergétique</strong>
+        Le corps énergétique, qui règle notre vie grâce au prana, ou énergie vitale. Cette couche est liée à notre respiration, notre circulation et nos systèmes énergétiques.
+      </div>
+      <div class="chakra-item">
+        <strong>Manomaya Kosha — Corps mental</strong>
+        Le corps mental et émotionnel. Cette couche représente nos pensées, nos émotions et nos cinq sens. Elle est responsable de la façon dont nous interprétons le monde.
+      </div>
+      <div class="chakra-item">
+        <strong>Vijnanamaya Kosha — Corps de l'intuition</strong>
+        Le corps de la sagesse et de l'intuition. Plus subtil que le corps mental, il est associé à la conscience, la connaissance de soi. Il est le lien entre notre esprit et notre âme.
+      </div>
+      <div class="chakra-item">
+        <strong>Anandamaya Kosha — Corps de la béatitude</strong>
+        La couche la plus profonde et la plus subtile, qui représente l'état de joie pure et de paix. Elle recouvre notre véritable "Soi" ou âme.
+      </div>
+      <h3>Le rôle des soins énergétiques</h3>
+      <p>Le monde moderne ne s'occupe souvent que du corps physique. Mais très souvent, ce qui nous arrive est une combinaison de ce qui se passe dans plusieurs couches de notre être. Le soin énergétique sur les corps subtils aide à faire des prises de conscience de soi, de nos mécanismes, de notre responsabilité et de notre pouvoir personnel.</p>
+    </div>
+    <button class="btn-close" onclick="closeArticle('enveloppes')">← Retour au blog</button>
+  </div>
+</div>
+
+<!-- 5 ÉLÉMENTS -->
+<div class="article-overlay" id="art-elements" onclick="closeIfBg(event, 'elements')">
+  <div class="article-modal">
+    <div class="article-header">
+      <div class="card-tag">Philosophie énergétique</div>
+      <h2>Les 5 Éléments</h2>
+    </div>
+    <div class="article-body">
+      <p>L'Éther, l'Air, le Feu, l'Eau et la Terre sont les constituants fondamentaux de toute chose dans l'univers. Ces éléments ne sont pas indépendants les uns des autres, mais interagissent constamment, formant un cycle dynamique où chaque élément nourrit ou domine un autre.</p>
+      <div class="chakra-item">
+        <strong>🌍 La Terre (Prithvi)</strong>
+        Stabilité, solidité et matière. Liée à la structure du corps — os, dents, peau et muscles. Elle symbolise la sécurité, la générosité et la persistance.
+      </div>
+      <div class="chakra-item">
+        <strong>💧 L'Eau (Jala)</strong>
+        Fluide, adaptable, nourrissante et purifiante. Associée aux liquides corporels, aux reins et à la circulation. Elle représente les émotions, l'intuition et la fluidité.
+      </div>
+      <div class="chakra-item">
+        <strong>🔥 Le Feu (Agni)</strong>
+        Énergie, transformation et chaleur. Associé à la digestion, la température corporelle. Il symbolise la volonté, la passion, la créativité et l'intellect.
+      </div>
+      <div class="chakra-item">
+        <strong>🌬️ L'Air (Vayu)</strong>
+        Légèreté, mouvement et communication. Associé à la respiration, aux poumons et aux fonctions mentales. Il est l'élément de l'esprit et de la pensée.
+      </div>
+      <div class="chakra-item">
+        <strong>✨ L'Éther (Akasha)</strong>
+        L'espace, le vide et l'invisible. Il permet à tous les autres éléments d'exister et d'interagir. Associé à la conscience, à l'âme et à la source de toute création.
+      </div>
+      <h3>Équilibre et santé</h3>
+      <p>Chaque saison insuffle son énergie à l'élément qui lui est propre, transmettant son potentiel énergétique aux organes du corps. La maladie apparaît en cas de déséquilibre d'un élément par rapport à un autre — soit trop faible, soit trop fort, entravant la circulation de l'énergie.</p>
+    </div>
+    <button class="btn-close" onclick="closeArticle('elements')">← Retour au blog</button>
+  </div>
+</div>
+
+<!-- GUERISSEURS -->
+<div class="article-overlay" id="art-guerisseurs" onclick="closeIfBg(event, 'guerisseurs')">
+  <div class="article-modal">
+    <div class="article-header">
+      <div class="card-tag">Réflexion &amp; Inspiration</div>
+      <h2>Nous sommes tous des guérisseurs</h2>
+    </div>
+    <div class="article-body">
+      <p>Nous avons souvent tendance à attribuer des dons particuliers aux guérisseurs et thérapeutes énergétiques — un peu comme si ces personnes étaient des "élus". En vérité, il ne s'agit pas que certains soient meilleurs que d'autres. C'est juste que certaines âmes sont plus expérimentées que d'autres.</p>
+      <p>Chaque âme a un vécu différent, des expériences différentes dans ses diverses vies. Il ne s'agit donc pas d'êtres plus élevés ou plus importants, mais simplement parfois d'être plus expérimentés, d'être un peu plus loin sur le chemin d'évolution.</p>
+      <p>Dans la plupart des cas, c'est la vie qui nous amène à exercer ce métier. Certains seront là pour aider l'être humain à se libérer, d'autres pour réactiver des codes, certains pour des prises de conscience, pour se reconnecter à notre vraie nature, d'autres pour "soigner" le corps.</p>
+      <h3>Notre lumière naturelle</h3>
+      <p>Nous sommes tous des guérisseurs, en choisissant de se guérir soi (de l'intérieur) et d'offrir au monde ses plus belles couleurs. Lorsque nous offrons notre lumière aux autres, nous guérissons.</p>
+      <p>Il n'y a pas de métier pour aider à guérir, car dans chaque métier on peut apporter sa part. Ce n'est pas ce que nous faisons qui est important, mais ce que nous sommes. Dans une simple présence, un simple sourire, se trouve parfois bien plus d'énergie de guérison que lors d'une séance chez un thérapeute.</p>
+      <p style="font-style:italic; color: var(--muted); margin-top: 1.5rem;">— Alex Beoschat</p>
+    </div>
+    <button class="btn-close" onclick="closeArticle('guerisseurs')">← Retour au blog</button>
+  </div>
+</div>
+
+
+
+<!-- BURNOUT -->
+<div class="article-overlay" id="art-burnout" onclick="closeIfBg(event, 'burnout')">
+  <div class="article-modal">
+    <div class="article-header">
+      <div class="card-tag">Bien-être &amp; Vitalité</div>
+      <h2>Burn-out : et si votre corps vous envoyait des signaux depuis longtemps ?</h2>
+    </div>
+    <div class="article-body">
+      <p>Le burn-out ne surgit pas du jour au lendemain. Bien avant l'effondrement, le corps envoie des signaux. Des petits messages discrets, puis de plus en plus forts, que l'on apprend trop souvent à ignorer — parce que l'on n'a pas le temps, parce que les autres comptent sur nous, parce que s'arrêter nous semble impossible.</p>
+      <p>Et pourtant. Le corps, lui, ne ment jamais.</p>
+
+      <h3>Le burn-out, un épuisement qui va bien au-delà du travail</h3>
+      <p>On associe souvent le burn-out au surmenage professionnel. Mais il peut toucher toute personne qui donne beaucoup — une mère de famille, un aidant, quelqu'un qui porte les émotions des autres depuis trop longtemps. C'est un épuisement total : physique, émotionnel et énergétique.</p>
+      <p>Sur le plan énergétique, le burn-out correspond à un état où l'énergie vitale est tellement appauvrie que le corps n'a plus les ressources nécessaires pour se régénérer. Les chakras, et notamment le chakra racine (sécurité, ancrage) et le plexus solaire (confiance, volonté), sont souvent profondément déséquilibrés.</p>
+
+      <h3>Les signaux que le corps envoie bien avant l'effondrement</h3>
+      <p>Reconnaître ces signaux précoces, c'est déjà prendre soin de soi :</p>
+      <div class="chakra-item">
+        <strong>Une fatigue qui ne passe pas</strong>
+        Vous dormez, mais vous vous réveillez épuisé(e). Le repos ne restaure plus. C'est l'un des premiers signaux que votre énergie vitale est en train de s'épuiser en profondeur.
+      </div>
+      <div class="chakra-item">
+        <strong>Des douleurs sans explication médicale</strong>
+        Tensions dans la nuque, douleurs dans le dos, maux de tête récurrents, oppression dans la poitrine… Le corps somatise ce que l'esprit ne peut plus contenir.
+      </div>
+      <div class="chakra-item">
+        <strong>Une irritabilité croissante</strong>
+        Tout vous agace. Les petites choses du quotidien deviennent insupportables. C'est souvent le signe que vos ressources intérieures sont à sec et que votre système nerveux est en état d'alerte permanent.
+      </div>
+      <div class="chakra-item">
+        <strong>La perte de plaisir et d'envie</strong>
+        Ce qui vous passionnait ne vous touche plus. Vous fonctionnez en pilote automatique. Vous faites les choses, mais sans y être vraiment.
+      </div>
+      <div class="chakra-item">
+        <strong>Un sentiment de déconnexion</strong>
+        De vous-même, des autres, de la vie. Comme si vous regardiez votre propre existence de l'extérieur. Ce détachement est un signal fort que votre énergie a besoin d'attention urgente.
+      </div>
+      <div class="chakra-item">
+        <strong>Les troubles du sommeil</strong>
+        Difficultés à vous endormir, réveils nocturnes, pensées qui tournent en boucle… Le mental ne s'arrête plus, même quand le corps réclame le repos.
+      </div>
+
+      <h3>Comment les soins énergétiques peuvent aider</h3>
+      <p>Face au burn-out, les soins énergétiques ne remplacent pas un accompagnement médical ou psychologique, mais ils constituent un soutien profond et complémentaire. En travaillant directement sur les déséquilibres énergétiques, ils permettent de :</p>
+      <ul>
+        <li>Rétablir la circulation de l'énergie vitale dans le corps</li>
+        <li>Libérer les tensions émotionnelles accumulées</li>
+        <li>Rééquilibrer les chakras épuisés ou surchargés</li>
+        <li>Favoriser un retour progressif à l'ancrage et à la sécurité intérieure</li>
+        <li>Accompagner le système nerveux vers un état de calme durable</li>
+      </ul>
+      <p>Beaucoup de personnes qui traversent un burn-out décrivent leurs séances comme un espace rare où elles peuvent enfin poser le poids qu'elles portent — sans jugement, sans performance, juste dans la présence et la douceur.</p>
+
+      <h3>Et si vous commenciez par vous écouter ?</h3>
+      <p>Si vous vous reconnaissez dans ces signaux, votre corps vous parle. Il ne vous demande pas de tout arrêter du jour au lendemain — il vous demande juste un peu d'attention, de douceur, et peut-être une première étape vers un mieux-être.</p>
+      <p>Je vous accompagne à Mitry-Mory (77) ou en séance à distance, dans un espace bienveillant et sans jugement. 🌿</p>
+      <p><strong>N'hésitez pas à me contacter ou à réserver directement votre séance.</strong></p>
+    </div>
+    <button class="btn-close" onclick="closeArticle('burnout')">← Retour au blog</button>
+  </div>
+</div>
+
+<!-- DOULEURS CHRONIQUES -->
+<div class="article-overlay" id="art-douleurs" onclick="closeIfBg(event, 'douleurs')">
+  <div class="article-modal">
+    <div class="article-header">
+      <div class="card-tag">Bien-être &amp; Vitalité</div>
+      <h2>Douleurs chroniques et énergie : quel lien ?</h2>
+    </div>
+    <div class="article-body">
+      <p>Vous souffrez depuis des mois, parfois des années. Les examens médicaux ne trouvent rien, ou alors un diagnostic sans vraie solution. La douleur est là, tenace, épuisante, incomprise. Et si une partie de la réponse se trouvait dans votre corps énergétique ?</p>
+      <p>La médecine conventionnelle traite principalement le corps physique. Mais nous sommes bien plus que cela. Derrière chaque douleur chronique, il existe souvent une dimension émotionnelle et énergétique que l'on n'a pas encore appris à écouter.</p>
+
+      <h3>Quand le corps physique et le corps énergétique se parlent</h3>
+      <p>Dans les traditions de soins énergétiques, le corps physique est considéré comme le reflet le plus dense de notre être. Avant qu'une douleur ou une maladie se manifeste physiquement, elle s'est souvent d'abord installée dans le corps énergétique — sous forme de blocage, de stagnation ou de déséquilibre.</p>
+      <p>Ce n'est pas une idée abstraite. De nombreuses personnes souffrant de douleurs chroniques rapportent des années de stress intense, de chocs émotionnels non traités, ou de situations de vie épuisantes, bien avant l'apparition de leurs symptômes physiques.</p>
+
+      <h3>Les douleurs chroniques les plus souvent liées aux déséquilibres énergétiques</h3>
+      <div class="chakra-item">
+        <strong>Les douleurs de dos et de nuque</strong>
+        Souvent associées à un excès de charge — responsabilités, pression, sentiment de "tout porter". Le chakra racine (sécurité) et le chakra de la gorge (expression) sont fréquemment impliqués.
+      </div>
+      <div class="chakra-item">
+        <strong>Les maux de tête et migraines</strong>
+        Peuvent signaler une surcharge mentale, un troisième œil en surtension, ou une difficulté à lâcher le contrôle. L'énergie du haut du corps cherche une sortie.
+      </div>
+      <div class="chakra-item">
+        <strong>Les douleurs abdominales et digestives</strong>
+        Le ventre est le siège de nos émotions. Les angoisses refoulées, les peurs non exprimées et les conflits intérieurs se logent souvent dans cette zone, perturbant le plexus solaire.
+      </div>
+      <div class="chakra-item">
+        <strong>Les douleurs articulaires et musculaires</strong>
+        Fréquentes chez les personnes en état de résistance chronique — résistance au changement, à une situation, à elles-mêmes. La fibromyalgie en est un exemple souvent cité.
+      </div>
+      <div class="chakra-item">
+        <strong>La fatigue chronique</strong>
+        Quand l'énergie vitale est épuisée en profondeur, le corps entre en mode survie. La fatigue chronique est souvent le signal ultime d'un système énergétique à bout de ressources.
+      </div>
+
+      <h3>Ce que les soins énergétiques apportent face aux douleurs chroniques</h3>
+      <p>Les soins énergétiques ne prétendent pas remplacer un suivi médical. Mais ils offrent quelque chose que la médecine conventionnelle n'adresse pas toujours : la dimension invisible de la douleur.</p>
+      <ul>
+        <li>Libérer les blocages énergétiques à l'origine des tensions physiques</li>
+        <li>Aider le système nerveux à sortir de l'état d'alerte chronique</li>
+        <li>Accompagner les émotions sous-jacentes à la douleur</li>
+        <li>Rétablir une circulation fluide de l'énergie vitale dans les zones affectées</li>
+        <li>Offrir un espace de profonde détente, souvent inaccessible au quotidien</li>
+      </ul>
+
+      <h3>Ce que disent les personnes accompagnées</h3>
+      <p>Beaucoup de personnes souffrant de douleurs chroniques — fibromyalgie, lombalgie, migraine, fatigue inexpliquée — témoignent d'un réel soulagement après quelques séances. Pas toujours une guérison totale, mais une atténuation des symptômes, un meilleur rapport à la douleur, et surtout un sentiment de ne plus être seule face à ce que vit son corps.</p>
+      <p>La douleur chronique est épuisante, aussi bien physiquement qu'émotionnellement. Être accompagnée dans un espace bienveillant, sans jugement, peut déjà changer profondément le vécu de la douleur.</p>
+
+      <h3>Et si vous faisiez le premier pas ?</h3>
+      <p>Si vous souffrez de douleurs chroniques et que vous n'avez pas encore exploré l'approche énergétique, je vous invite à tenter l'expérience. Une séance suffit parfois pour sentir que quelque chose se dépose — et que le corps commence enfin à souffler.</p>
+      <p>Je vous accueille à Mitry-Mory (77) ou en séance à distance, dans un cadre doux et sécurisant.</p>
+      <p><strong>N'hésitez pas à me contacter ou à réserver votre séance directement en ligne.</strong></p>
+    </div>
+    <button class="btn-close" onclick="closeArticle('douleurs')">← Retour au blog</button>
+  </div>
+</div>
+
+<!-- SEANCE A DISTANCE -->
+<div class="article-overlay" id="art-distance" onclick="closeIfBg(event, 'distance')">
+  <div class="article-modal">
+    <div class="article-header">
+      <div class="card-tag">Questions fréquentes</div>
+      <h2>Séance à distance : est-ce vraiment efficace ?</h2>
+    </div>
+    <div class="article-body">
+      <p>C'est souvent la première question que l'on me pose : <em>"Mais… comment ça marche à distance ? On ne se voit pas, on ne se touche pas… est-ce que ça peut vraiment avoir un effet ?"</em></p>
+      <p>C'est une question légitime, et j'aime y répondre honnêtement. Alors voici ce que je sais, ce que je vis dans ma pratique, et ce que ressentent les personnes que j'accompagne à distance depuis des mois.</p>
+
+      <h3>L'énergie n'a pas de frontières</h3>
+      <p>Le premier point à comprendre, c'est que l'énergie vitale — le prana, le qi, le ki — ne se limite pas au corps physique. Elle rayonne au-delà, forme ce que l'on appelle le champ énergétique ou l'aura, et n'est pas soumise aux mêmes contraintes que la matière.</p>
+      <p>Dans cet espace énergétique, la distance géographique n'est pas un obstacle. Ce qui compte, c'est la connexion intentionnelle entre la praticienne et la personne accompagnée — et cette connexion peut s'établir que vous soyez à deux mètres ou à deux mille kilomètres.</p>
+      <p>C'est le même principe qui explique pourquoi vous pouvez penser intensément à quelqu'un et que cette personne vous appelle quelques minutes plus tard. L'énergie circule, relie, transcende l'espace.</p>
+
+      <h3>Comment se déroule concrètement une séance à distance ?</h3>
+      <div class="chakra-item">
+        <strong>Avant la séance</strong>
+        Vous me transmettez ce que vous ressentez, ce qui vous pèse, vos intentions pour la séance. Ce partage m'aide à orienter le soin vers ce dont vous avez besoin.
+      </div>
+      <div class="chakra-item">
+        <strong>Pendant la séance</strong>
+        Vous êtes installé(e) confortablement chez vous, allongé(e) ou assis(e), dans un endroit calme. Je travaille de mon côté sur votre champ énergétique, à distance, en utilisant les mêmes techniques qu'en présentiel. La séance dure généralement entre 45 minutes et 1 heure.
+      </div>
+      <div class="chakra-item">
+        <strong>Après la séance</strong>
+        Je vous envoie un compte-rendu de ce que j'ai perçu, des zones travaillées, et des ressentis de la séance. Ce retour est souvent très parlant — et surprenant de précision pour les personnes qui vivent leur première séance à distance.
+      </div>
+
+      <h3>Ce que ressentent les personnes accompagnées à distance</h3>
+      <p>La plupart des personnes rapportent des ressentis très similaires à ceux d'une séance en présentiel :</p>
+      <ul>
+        <li>Une chaleur ou des picotements dans certaines zones du corps</li>
+        <li>Une profonde détente, parfois un endormissement léger</li>
+        <li>Des émotions qui remontent et se libèrent</li>
+        <li>Un sentiment de légèreté après la séance</li>
+        <li>Des rêves intenses dans les jours qui suivent</li>
+      </ul>
+      <p>Ces ressentis ne sont pas suggestifs. Ils arrivent même chez les personnes les plus sceptiques — et c'est souvent ce qui les convainc définitivement.</p>
+
+      <h3>La séance à distance, c'est fait pour qui ?</h3>
+      <p>La séance à distance est idéale si vous :</p>
+      <ul>
+        <li>Habitez loin de Mitry-Mory ou n'avez pas de moyen de vous déplacer</li>
+        <li>Avez un emploi du temps chargé et peu de temps libre</li>
+        <li>Êtes en période de fatigue intense et souhaitez rester chez vous</li>
+        <li>Souhaitez tester les soins énergétiques sans vous déplacer</li>
+        <li>Avez déjà fait une séance en présentiel et souhaitez continuer à votre rythme</li>
+      </ul>
+
+      <h3>Mon avis honnête</h3>
+      <p>Je ne vous dirai pas que la séance à distance est identique à la séance en présentiel — ce serait vous mentir. Le contact physique, la présence dans la même pièce, ont leur propre dimension. Mais les effets énergétiques sont tout aussi réels, tout aussi profonds. Et pour beaucoup de personnes, la séance à distance est même plus facile : pas de trajet, pas de stress de l'organisation, juste vous, chez vous, dans votre cocon.</p>
+      <p>Alors si vous hésitez encore… essayez. Une seule séance suffit souvent pour lever tous les doutes. 🌿</p>
+      <p><strong>Réservez votre séance à distance directement en ligne — je serais ravie de vous accompagner, où que vous soyez.</strong></p>
+    </div>
+    <button class="btn-close" onclick="closeArticle('distance')">← Retour au blog</button>
+  </div>
+</div>
+
+<script>
+  function openArticle(id) {
+    document.getElementById('art-' + id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeArticle(id) {
+    document.getElementById('art-' + id).classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeIfBg(e, id) {
+    if (e.target === document.getElementById('art-' + id)) closeArticle(id);
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.article-overlay.open').forEach(el => {
+        el.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    }
+  });
+</script>
+</body>
+</html>
