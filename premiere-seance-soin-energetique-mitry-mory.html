@@ -309,6 +309,20 @@
       font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; padding: .8rem 1.6rem;
     }
     .cta a:hover { background: #355a70; }
+    .blog-grid { grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); }
+    @media (max-width: 640px) {
+      .hero { margin-top: 2rem; padding: 0 1rem; }
+      .blog-section { margin: 2rem auto; padding: 0 1rem; }
+      .blog-grid { gap: 1.2rem; }
+      .featured-left { padding: 2rem 1.5rem; }
+      .featured-left h2 { font-size: 1.6rem; }
+      .topbar { padding: 1rem 1rem 0; font-size: .65rem; }
+      .article-page { padding: 0 .8rem; margin-top: 1rem; }
+      .article-header, .article-body { padding: 1.6rem 1.3rem; }
+      .cta { margin: 0 1.3rem 1.6rem; padding: 1.3rem 1.1rem; }
+      .back { margin: 0 1.3rem 1.6rem; }
+    }
+    html, body { overflow-x: hidden; }
     .back { display: block; margin: 0 2.5rem 2.5rem; width: fit-content; text-decoration: none; }
   </style>
 </head>
@@ -379,5 +393,15 @@
   </article>
 </main>
 
+<script>
+(function(){
+  function send(nav){
+    try{ parent.postMessage({nathBlogHeight: document.documentElement.scrollHeight, nathBlogNav: !!nav}, '*'); }catch(e){}
+  }
+  window.addEventListener('load', function(){ send(true); setTimeout(send, 600); });
+  window.addEventListener('resize', function(){ send(false); });
+  if (window.ResizeObserver) new ResizeObserver(function(){ send(false); }).observe(document.body);
+})();
+</script>
 </body>
 </html>
